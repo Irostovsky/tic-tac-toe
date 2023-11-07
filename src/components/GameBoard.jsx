@@ -25,6 +25,7 @@ const GameBoard = ({ onSelectionSquare, turns }) => {
                   onClick={() => {
                     onSelectionSquare(rowIndex, colIndex);
                   }}
+                  disabled={playerSymbol}
                 >
                   {playerSymbol}
                 </button>
