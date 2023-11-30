@@ -15,6 +15,11 @@ const getActivePlayer = (turns) =>
   turns.length && turns[0].player === "X" ? "O" : "X";
 
 function App() {
+  const [players, setPlayers] = useState({
+    X: "Player 1",
+    O: "Player 2",
+  });
+
   const [gameTurns, setGameTurns] = useState([]);
   let activePlayer = getActivePlayer(gameTurns);
 
@@ -32,7 +37,7 @@ function App() {
     );
     const uniqueSymbols = [...new Set(combinationSymbols)];
     if (uniqueSymbols.length === 1 && uniqueSymbols[0]) {
-      winner = uniqueSymbols[0];
+      winner = players[uniqueSymbols[0]];
     }
   }
 
@@ -51,6 +56,15 @@ function App() {
     setGameTurns([]);
   };
 
+  const handlePlayerNameChange = (symbol, name) => {
+    setPlayers((previousPlayers) => {
+      return {
+        ...previousPlayers,
+        [symbol]: name,
+      };
+    });
+  };
+
   return (
     <main>
       <div id="game-container">
@@ -59,11 +73,13 @@ function App() {
             initialName="Player 1"
             symbol="X"
             isActive={activePlayer === "X"}
+            onSavePlayer={handlePlayerNameChange}
           />
           <Player
             initialName="Player 2"
             symbol="O"
             isActive={activePlayer === "O"}
+            onSavePlayer={handlePlayerNameChange}
           />
         </ol>
         {(winner || hasDraw) && (
