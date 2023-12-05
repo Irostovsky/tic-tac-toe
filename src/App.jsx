@@ -5,11 +5,16 @@ import Log from "./components/Log";
 import { WINNING_COMBINATIONS } from "./winning-combinations";
 import GameOver from "./components/GameOver";
 
-const initialGameBoard = [
+const INITIAL_GAME_BOARD = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
+
+const PLAYERS = {
+  X: "Player 1",
+  O: "Player 2",
+};
 
 const getActivePlayer = (turns) =>
   turns.length && turns[0].player === "X" ? "O" : "X";
@@ -29,7 +34,7 @@ const deriveWinner = (board, players) => {
 };
 
 const deriveBoard = (turns) => {
-  let board = JSON.parse(JSON.stringify(initialGameBoard));
+  let board = JSON.parse(JSON.stringify(INITIAL_GAME_BOARD));
   for (const turn of turns) {
     const { square, player } = turn;
     const { row, col } = square;
@@ -39,11 +44,7 @@ const deriveBoard = (turns) => {
 };
 
 function App() {
-  const [players, setPlayers] = useState({
-    X: "Player 1",
-    O: "Player 2",
-  });
-
+  const [players, setPlayers] = useState(PLAYERS);
   const [gameTurns, setGameTurns] = useState([]);
 
   const activePlayer = getActivePlayer(gameTurns);
@@ -79,13 +80,13 @@ function App() {
       <div id="game-container">
         <ol id="players" className="highlight-player">
           <Player
-            initialName="Player 1"
+            initialName={PLAYERS.X}
             symbol="X"
             isActive={activePlayer === "X"}
             onSavePlayer={handlePlayerNameChange}
           />
           <Player
-            initialName="Player 2"
+            initialName={PLAYERS.O}
             symbol="O"
             isActive={activePlayer === "O"}
             onSavePlayer={handlePlayerNameChange}
