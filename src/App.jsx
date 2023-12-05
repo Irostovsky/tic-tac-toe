@@ -28,6 +28,16 @@ const deriveWinner = (board, players) => {
   return winner;
 };
 
+const deriveBoard = (turns) => {
+  let board = JSON.parse(JSON.stringify(initialGameBoard));
+  for (const turn of turns) {
+    const { square, player } = turn;
+    const { row, col } = square;
+    board[row][col] = player;
+  }
+  return board;
+};
+
 function App() {
   const [players, setPlayers] = useState({
     X: "Player 1",
@@ -35,18 +45,12 @@ function App() {
   });
 
   const [gameTurns, setGameTurns] = useState([]);
-  let activePlayer = getActivePlayer(gameTurns);
 
-  let board = JSON.parse(JSON.stringify(initialGameBoard));
-  for (const turn of gameTurns) {
-    const { square, player } = turn;
-    const { row, col } = square;
-    board[row][col] = player;
-  }
-
+  const activePlayer = getActivePlayer(gameTurns);
+  const board = deriveBoard(gameTurns);
   const winner = deriveWinner(board, players);
-
   const hasDraw = gameTurns.length == 9 && !winner;
+
   const handleSquareSelection = (rowIndex, colIndex) => {
     setGameTurns((prevGameTurns) => {
       const currentPlayer = getActivePlayer(prevGameTurns);
